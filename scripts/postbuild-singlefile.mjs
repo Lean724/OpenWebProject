@@ -24,13 +24,18 @@ if (!fs.existsSync(distPath)) {
 
 let html = fs.readFileSync(distPath, 'utf8');
 
-// 1. Eliminar cualquier script de redirección o elemento de fallback de index.html
-// El archivo compilado NUNCA debe contener código de redirección para evitar cualquier bucle
-html = html.replace(/<script[^>]*>[\s\S]*?window\.location\.replace[\s\S]*?<\/script>/gi, '');
-html = html.replace(/<div id="file-protocol-fallback"[\s\S]*?<\/div>/gi, '');
-html = html.replace(/<script[^>]*>[\s\S]*?file-protocol-fallback[\s\S]*?<\/script>/gi, '');
+// 1. Eliminar de forma segura SOLO los pequeños scripts auxiliares de desarrollo/redirección
+html = html.replace(/<script[\s\S]*?<\/script>/gi, (match) => {
+  if (match.length < 5000 && (match.includes('OpenWebProject.html') || match.includes('file-protocol-fallback'))) {
+    return '';
+  }
+  return match;
+});
 
-// 2. Eliminar cualquier atributo crossorigin y type="module"
+// Eliminar el contenedor visual de fallback para que no aparezca en el archivo compilado
+html = html.replace(/<div id="file-protocol-fallback"[\s\S]*?<\/div>(\s*<\/div>)?/gi, '');
+
+// 2. Eliminar cualquier atributo crossorigin y type="module" del bundle principal
 html = html.replace(/<script\s+type=["']module["']\s+crossorigin[^>]*>/gi, '<script>');
 html = html.replace(/<script\s+type=["']module["'][^>]*>/gi, '<script>');
 html = html.replace(/<script\s+crossorigin[^>]*>/gi, '<script>');
@@ -73,11 +78,11 @@ html = html.replace(/<div id="root"[^>]*><\/div>/gi, '<div id="root" class="h-fu
 
 // 9. Guardar en dist/index.html
 fs.writeFileSync(distPath, html, 'utf8');
-console.log('✅ dist/index.html optimizado para ejecución offline directa (file://)');
+console.log(`✅ dist/index.html optimizado (${(html.length / 1024).toFixed(1)} KB) para ejecución offline directa (file://)`);
 
 // 10. Guardar en la raíz como OpenWebProject.html
 fs.writeFileSync(rootAppPath, html, 'utf8');
-console.log('✅ OpenWebProject.html generado en la raíz del proyecto');
+console.log(`✅ OpenWebProject.html generado (${(html.length / 1024).toFixed(1)} KB) en la raíz del proyecto`);
 
 // 11. Guardar en public/ para descarga directa desde la UI de la aplicación
 if (!fs.existsSync(publicDir)) {
