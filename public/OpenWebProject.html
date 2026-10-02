@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <script>
+  // Prevención de recargas accidentales en protocolo file://
+  if (typeof window !== 'undefined') {
+    window.addEventListener('vite:preloadError', function(e) {
+      if (e.preventDefault) e.preventDefault();
+      if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+    }, true);
+    window.addEventListener('vite:disabledPreloadError', function(e) {
+      if (e.preventDefault) e.preventDefault();
+      if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+    }, true);
+  }
+</script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OpenWebProject — Gestión y Planificación de Proyectos</title>
+    <meta name="description" content="Aplicación de gestión y planificación de proyectos inspirada en Microsoft Project con Gantt interactivo, dependencias, baselines y total portabilidad offline." />
+    <meta property="og:title" content="OpenWebProject — Gestión y Planificación de Proyectos" />
+    <meta property="og:description" content="Aplicación de gestión y planificación de proyectos inspirada en Microsoft Project con Gantt interactivo, dependencias, baselines y total portabilidad offline." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    
+
+    <div id="root" class="h-full w-full"></div>
+  </body>
+</html>

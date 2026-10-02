@@ -1,0 +1,6 @@
+{
+  "name": "OpenWebProject",
+  "description": "Aplicación de gestión y planificación de proyectos inspirada en Microsoft Project con Gantt interactivo, dependencias, baselines y total portabilidad offline.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
