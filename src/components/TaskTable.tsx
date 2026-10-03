@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { Task, TaskPriority, TaskStatus, TrafficLight } from '../types/project';
 import { formatDisplayDate } from '../domain/calendar';
+import { useLanguage } from '../i18n/LanguageContext';
 
 interface TaskTableProps {
   tasks: Task[];
@@ -106,6 +107,8 @@ export const TaskTable: React.FC<TaskTableProps> = ({
       .join('; ');
   };
 
+  const { t } = useLanguage();
+
   return (
     <div className="h-full w-full overflow-auto bg-white select-none border-r border-slate-200">
       <table className="w-full border-collapse text-left text-xs font-sans">
@@ -121,15 +124,15 @@ export const TaskTable: React.FC<TaskTableProps> = ({
             </th>
             <th className="w-12 px-2 py-2 text-center border-r border-slate-200">WBS</th>
             <th className="w-6 px-1 py-2 text-center border-r border-slate-200">●</th>
-            <th className="min-w-[200px] px-3 py-2 border-r border-slate-200">Nombre de Tarea</th>
-            <th className="w-24 px-2 py-2 border-r border-slate-200">Inicio</th>
-            <th className="w-24 px-2 py-2 border-r border-slate-200">Fin</th>
-            <th className="w-24 px-2 py-2 border-r border-slate-200">Duración</th>
-            <th className="w-16 px-2 py-2 border-r border-slate-200 text-right">Trabajo</th>
-            <th className="w-20 px-2 py-2 border-r border-slate-200 text-center">% Prog.</th>
-            <th className="w-28 px-2 py-2 border-r border-slate-200">Estado</th>
-            <th className="w-28 px-2 py-2 border-r border-slate-200">Responsable</th>
-            <th className="w-24 px-2 py-2 border-r border-slate-200">Predecesoras</th>
+            <th className="min-w-[200px] px-3 py-2 border-r border-slate-200">{t('colName')}</th>
+            <th className="w-24 px-2 py-2 border-r border-slate-200">{t('colStart')}</th>
+            <th className="w-24 px-2 py-2 border-r border-slate-200">{t('colFinish')}</th>
+            <th className="w-24 px-2 py-2 border-r border-slate-200">{t('colDuration')}</th>
+            <th className="w-16 px-2 py-2 border-r border-slate-200 text-right">Horas</th>
+            <th className="w-20 px-2 py-2 border-r border-slate-200 text-center">{t('colProgress')}</th>
+            <th className="w-28 px-2 py-2 border-r border-slate-200">{t('colStatus')}</th>
+            <th className="w-28 px-2 py-2 border-r border-slate-200">{t('colResources')}</th>
+            <th className="w-24 px-2 py-2 border-r border-slate-200">{t('colPredecessors')}</th>
             <th className="w-20 px-2 py-2 border-r border-slate-200">Prioridad</th>
             <th className="w-12 px-1 py-2 text-center">Acción</th>
           </tr>

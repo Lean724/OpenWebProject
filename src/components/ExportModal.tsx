@@ -13,6 +13,7 @@ import {
   FileDown,
   Layers,
   Laptop,
+  Container,
 } from 'lucide-react';
 import { Project, Workspace, Task } from '../types/project';
 import {
@@ -30,6 +31,7 @@ interface ExportModalProps {
   workspace: Workspace;
   filteredTasks: Task[];
   onClose: () => void;
+  onOpenRunLocalModal?: () => void;
 }
 
 export const ExportModal: React.FC<ExportModalProps> = ({
@@ -37,6 +39,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
   workspace,
   filteredTasks,
   onClose,
+  onOpenRunLocalModal,
 }) => {
   const sanitizeFilename = (name: string) => name.replace(/[^\w\s-]/g, '').trim().replace(/\s+/g, '_');
 
@@ -160,6 +163,33 @@ export const ExportModal: React.FC<ExportModalProps> = ({
             </div>
             <Download className="w-4 h-4 text-indigo-600 group-hover:scale-110 transition-transform shrink-0" />
           </div>
+
+          {/* 0.5 Versión Dockerizada & Opciones de Despliegue */}
+          {onOpenRunLocalModal && (
+            <div
+              onClick={() => {
+                onClose();
+                onOpenRunLocalModal();
+              }}
+              className="p-3.5 bg-blue-50/70 hover:bg-blue-100/70 border border-blue-200 rounded-xl cursor-pointer transition-colors flex items-center justify-between gap-3 group ring-1 ring-blue-500/20"
+            >
+              <div className="flex items-start gap-3">
+                <div className="p-2 rounded-lg bg-blue-600 text-white shrink-0 shadow-xs">
+                  <Container className="w-4 h-4" />
+                </div>
+                <div>
+                  <span className="font-bold text-blue-950 block transition-colors flex items-center gap-1.5">
+                    Versión Dockerizada & Despliegue Local
+                    <span className="px-1.5 py-0.5 text-[9px] font-semibold bg-blue-600 text-white rounded">Docker / Compose</span>
+                  </span>
+                  <p className="text-[11px] text-blue-900/80 mt-0.5 leading-relaxed">
+                    Ejecuta OpenWebProject en contenedores Docker aislados (Nginx Alpine), servidores locales (Python/Node) o descarga el paquete Docker listo para usar.
+                  </p>
+                </div>
+              </div>
+              <Download className="w-4 h-4 text-blue-600 group-hover:scale-110 transition-transform shrink-0" />
+            </div>
+          )}
 
           {/* 1. OpenWebProject .project */}
           <div

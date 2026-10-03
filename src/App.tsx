@@ -18,6 +18,7 @@ import { SnapshotModal } from './components/SnapshotModal';
 import { CalendarModal } from './components/CalendarModal';
 import { ImportModal } from './components/ImportModal';
 import { ExportModal } from './components/ExportModal';
+import { RunLocalModal } from './components/RunLocalModal';
 import { NotificationToast } from './components/NotificationToast';
 import { Task } from './types/project';
 import { exportProjectToJson, downloadFile } from './services/importExport';
@@ -92,6 +93,7 @@ export default function App() {
   const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false);
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
+  const [isRunModalOpen, setIsRunModalOpen] = useState(false);
 
   // Split resizer mouse drag handlers
   const handleSplitMouseDown = (e: React.MouseEvent) => {
@@ -274,6 +276,7 @@ export default function App() {
         onOpenImport={() => setIsImportModalOpen(true)}
         onOpenExport={() => setIsExportModalOpen(true)}
         onDownloadOfflineApp={handleDownloadOfflineApp}
+        onOpenRunLocalModal={() => setIsRunModalOpen(true)}
         onQuickSave={() => {
           const json = exportProjectToJson(activeProject);
           downloadFile(json, `${activeProject.name.replace(/\s+/g, '_')}.project`, 'application/json');
@@ -491,6 +494,15 @@ export default function App() {
           workspace={workspace}
           filteredTasks={filteredTasks}
           onClose={() => setIsExportModalOpen(false)}
+          onOpenRunLocalModal={() => setIsRunModalOpen(true)}
+        />
+      )}
+
+      {/* Local Execution & Docker Options Modal */}
+      {isRunModalOpen && (
+        <RunLocalModal
+          onClose={() => setIsRunModalOpen(false)}
+          onDownloadOfflineApp={handleDownloadOfflineApp}
         />
       )}
 

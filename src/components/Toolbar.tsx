@@ -18,12 +18,10 @@ import {
   History,
   Activity,
   Search,
-  Filter,
-  ZoomIn,
-  ZoomOut,
   Maximize2,
 } from 'lucide-react';
 import { Project } from '../types/project';
+import { useLanguage } from '../i18n/LanguageContext';
 
 interface ToolbarProps {
   project: Project;
@@ -90,6 +88,8 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   onZoomChange,
   onFitToScreen,
 }) => {
+  const { t } = useLanguage();
+
   return (
     <div className="h-10 bg-white border-b border-slate-200 px-3 flex items-center justify-between gap-3 text-xs select-none">
       {/* Group 1: Task Editing & Hierarchy Actions */}
@@ -97,16 +97,16 @@ export const Toolbar: React.FC<ToolbarProps> = ({
         <button
           onClick={onCreateTask}
           className="flex items-center gap-1 px-2.5 py-1 bg-slate-900 text-white rounded-md hover:bg-slate-800 font-medium transition-colors shadow-2xs"
-          title="Crear nueva tarea al final del cronograma"
+          title={t('newTask')}
         >
           <Plus className="w-3.5 h-3.5" />
-          <span>Tarea</span>
+          <span>{t('newTask')}</span>
         </button>
 
         <button
           onClick={onQuickMilestone}
           className="flex items-center gap-1 px-2 py-1 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-md font-medium transition-colors"
-          title="Crear hito (duración 0 días)"
+          title="Hito / Milestone (0d)"
         >
           <Flag className="w-3 h-3 text-indigo-600" />
           <span>Hito</span>
@@ -118,7 +118,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
           onClick={onIndent}
           disabled={selectedTaskCount === 0}
           className="p-1.5 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded disabled:opacity-30 disabled:pointer-events-none"
-          title="Indentar / Convertir en subtarea"
+          title={t('indent')}
         >
           <Indent className="w-3.5 h-3.5" />
         </button>
@@ -127,7 +127,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
           onClick={onOutdent}
           disabled={selectedTaskCount === 0}
           className="p-1.5 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded disabled:opacity-30 disabled:pointer-events-none"
-          title="Desindentar / Subir nivel de jerarquía"
+          title={t('outdent')}
         >
           <Outdent className="w-3.5 h-3.5" />
         </button>
@@ -136,7 +136,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
           onClick={onMoveUp}
           disabled={selectedTaskCount === 0}
           className="p-1.5 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded disabled:opacity-30 disabled:pointer-events-none"
-          title="Mover arriba"
+          title={t('moveUp')}
         >
           <ArrowUp className="w-3.5 h-3.5" />
         </button>
@@ -145,7 +145,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
           onClick={onMoveDown}
           disabled={selectedTaskCount === 0}
           className="p-1.5 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded disabled:opacity-30 disabled:pointer-events-none"
-          title="Mover abajo"
+          title={t('moveDown')}
         >
           <ArrowDown className="w-3.5 h-3.5" />
         </button>
@@ -154,7 +154,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
           <button
             onClick={onDeleteSelected}
             className="flex items-center gap-1 p-1.5 text-rose-600 hover:bg-rose-50 rounded ml-1"
-            title={`Eliminar ${selectedTaskCount} tarea(s) seleccionada(s)`}
+            title={`${t('delete')} (${selectedTaskCount})`}
           >
             <Trash2 className="w-3.5 h-3.5" />
             <span className="font-mono text-[11px] font-semibold">{selectedTaskCount}</span>
@@ -167,7 +167,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
           onClick={onUndo}
           disabled={!canUndo}
           className="p-1.5 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded disabled:opacity-30 disabled:pointer-events-none"
-          title="Deshacer (Ctrl+Z)"
+          title={`${t('undo')} (Ctrl+Z)`}
         >
           <RotateCcw className="w-3.5 h-3.5" />
         </button>
@@ -176,7 +176,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
           onClick={onRedo}
           disabled={!canRedo}
           className="p-1.5 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded disabled:opacity-30 disabled:pointer-events-none"
-          title="Rehacer (Ctrl+Y)"
+          title={`${t('redo')} (Ctrl+Y)`}
         >
           <RotateCw className="w-3.5 h-3.5" />
         </button>
@@ -191,10 +191,10 @@ export const Toolbar: React.FC<ToolbarProps> = ({
               ? 'bg-rose-50 text-rose-700 border-rose-200 font-semibold'
               : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
           }`}
-          title="Destacar tareas pertenecientes al Camino Crítico"
+          title={t('criticalPath')}
         >
           <Activity className="w-3 h-3 text-rose-500" />
-          <span>Camino Crítico</span>
+          <span>{t('criticalPath')}</span>
         </button>
 
         <button
@@ -204,39 +204,39 @@ export const Toolbar: React.FC<ToolbarProps> = ({
               ? 'bg-indigo-50 text-indigo-700 border-indigo-200 font-semibold'
               : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
           }`}
-          title="Gestionar y comparar Líneas Base (Baselines)"
+          title={t('baselines')}
         >
           <Layers className="w-3 h-3 text-indigo-500" />
-          <span>Líneas Base ({project.baselines.length})</span>
+          <span>{t('baselines')} ({project.baselines.length})</span>
         </button>
 
         <button
           onClick={onOpenCalendar}
           className="flex items-center gap-1.5 px-2 py-1 bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 rounded-md font-medium transition-colors"
-          title="Configurar calendario laboral y días no laborables (Days Off)"
+          title={t('calendar')}
         >
           <Calendar className="w-3 h-3 text-slate-500" />
-          <span>Calendario</span>
+          <span>{t('calendar')}</span>
         </button>
 
         <button
           onClick={onOpenSnapshots}
           className="flex items-center gap-1.5 px-2 py-1 bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 rounded-md font-medium transition-colors"
-          title="Historial de versiones y Snapshots manuales"
+          title={t('snapshots')}
         >
           <History className="w-3 h-3 text-slate-500" />
-          <span>Snapshots ({project.snapshots.length})</span>
+          <span>{t('snapshots')} ({project.snapshots.length})</span>
         </button>
       </div>
 
       {/* Group 3: Search, Filters & Gantt Zoom Controls */}
       <div className="flex items-center gap-2">
         {/* Search */}
-        <div className="relative w-36 lg:w-48">
+        <div className="relative w-32 sm:w-40 lg:w-48">
           <Search className="w-3 h-3 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
-            placeholder="Buscar tareas..."
+            placeholder={t('searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             className="w-full pl-7 pr-2 py-1 text-xs bg-slate-50 border border-slate-200 rounded-md focus:outline-none focus:border-slate-400 focus:bg-white transition-colors"
@@ -247,27 +247,25 @@ export const Toolbar: React.FC<ToolbarProps> = ({
         <select
           value={statusFilter}
           onChange={(e) => onStatusChange(e.target.value)}
-          className="px-2 py-1 bg-slate-50 border border-slate-200 rounded-md text-xs text-slate-700 focus:outline-none"
+          className="px-2 py-1 bg-slate-50 border border-slate-200 rounded-md text-xs text-slate-700 focus:outline-none hidden md:block"
         >
-          <option value="all">Todos los estados</option>
-          <option value="not_started">No iniciada</option>
-          <option value="in_progress">En progreso</option>
-          <option value="completed">Completada</option>
-          <option value="blocked">Bloqueada</option>
-          <option value="cancelled">Cancelada</option>
-          <option value="on_hold">En espera</option>
+          <option value="all">{t('allStatuses')}</option>
+          <option value="not_started">{t('statusNotStarted')}</option>
+          <option value="in_progress">{t('statusInProgress')}</option>
+          <option value="completed">{t('statusCompleted')}</option>
+          <option value="on_hold">{t('statusOnHold')}</option>
         </select>
 
         {/* Filter Semáforo */}
         <select
           value={trafficFilter}
           onChange={(e) => onTrafficChange(e.target.value)}
-          className="px-2 py-1 bg-slate-50 border border-slate-200 rounded-md text-xs text-slate-700 focus:outline-none"
+          className="px-2 py-1 bg-slate-50 border border-slate-200 rounded-md text-xs text-slate-700 focus:outline-none hidden lg:block"
         >
-          <option value="all">Semáforo (Todos)</option>
-          <option value="green">🟢 Verde (En plazo)</option>
-          <option value="yellow">🟡 Amarillo (Desviado)</option>
-          <option value="red">🔴 Rojo (Vencido)</option>
+          <option value="all">{t('allTraffic')}</option>
+          <option value="green">🟢 {t('trafficGreen')}</option>
+          <option value="yellow">🟡 {t('trafficYellow')}</option>
+          <option value="red">🔴 {t('trafficRed')}</option>
         </select>
 
         {/* Gantt Zoom Segmented Control */}
@@ -286,7 +284,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
           <button
             onClick={onFitToScreen}
             className="p-1 text-slate-500 hover:text-slate-800 ml-0.5"
-            title="Ajustar proyecto a la pantalla"
+            title={t('fitScreen')}
           >
             <Maximize2 className="w-3 h-3" />
           </button>
